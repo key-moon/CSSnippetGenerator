@@ -156,16 +156,17 @@ public partial class CodeSnippetDeclarations : SnippetElement
     /// <remarks/>
     [XmlElement("Literal", typeof(CodeSnippetDeclarationsLiteral))]
     [XmlElement("Object", typeof(CodeSnippetDeclarationsObject))]
-    public object[] Items { get; set; }
+    public List<DeclarationsElement> Items { get; set; }
 }
 
+public abstract class DeclarationsElement { }
 /// <remarks/>
 [Serializable]
 [DebuggerStepThrough]
 [DesignerCategory("code")]
 [GeneratedCode("xsd", "4.7.3081.0")]
 [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet")]
-public partial class CodeSnippetDeclarationsLiteral
+public partial class CodeSnippetDeclarationsLiteral : DeclarationsElement
 {
     /// <remarks/>
     [XmlElement("Default", typeof(string))]
@@ -214,7 +215,7 @@ public partial class CodeSnippetDeclarationsLiteral
 [DesignerCategory("code")]
 [GeneratedCode("xsd", "4.7.3081.0")]
 [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet")]
-public partial class CodeSnippetDeclarationsObject
+public partial class CodeSnippetDeclarationsObject : DeclarationsElement
 {
 
     /// <remarks/>
@@ -224,12 +225,12 @@ public partial class CodeSnippetDeclarationsObject
     [XmlElement("ToolTip", typeof(string))]
     [XmlElement("Type", typeof(string))]
     [XmlChoiceIdentifier("ItemsElementName")]
-    public string[] Items { get; set; }
+    public List<string> Items { get; set; }
 
     /// <remarks/>
     [XmlIgnore]
     [XmlElement("ItemsElementName")]
-    public ItemsChoiceType[] ItemsElementName { get; set; }
+    public List<ItemsChoiceType> ItemsElementName { get; set; }
 
     /// <remarks/>
     [XmlAttribute]
