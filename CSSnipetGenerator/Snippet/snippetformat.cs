@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.CodeDom.Compiler;
@@ -40,12 +41,14 @@ public partial class CodeSnippet
     [XmlArrayItem("Declarations", typeof(CodeSnippetDeclarations), IsNullable = false)]
     [XmlArrayItem("Imports", typeof(CodeSnippetImports), IsNullable = false)]
     [XmlArrayItem("References", typeof(CodeSnippetReferences), IsNullable = false)]
-    public object[] Snippet { get; set; }
+    public List<SnippetElement> Snippet { get; set; }
 
     /// <remarks/>
     [XmlAttribute]
     public string Format { get; set; }
 }
+
+public abstract class SnippetElement { }
 
 /// <remarks/>
 [Serializable]
@@ -64,12 +67,12 @@ public partial class CodeSnippetHeader
     [XmlElement("SnippetTypes", typeof(CodeSnippetSnippetTypes))]
     [XmlElement("Title", typeof(string))]
     [XmlChoiceIdentifier("ItemsElementName")]
-    public object[] Items { get; set; }
+    public List<object> Items { get; set; }
 
     /// <remarks/>
     [XmlIgnore]
     [XmlElement("ItemsElementName")]
-    public ItemsChoiceType[] ItemsElementName { get; set; }
+    public List<ItemsChoiceType> ItemsElementName { get; set; }
 
     /// <remarks/>
     [Serializable]
@@ -126,7 +129,7 @@ public partial class CodeSnippetSnippetTypes
 [DesignerCategory("code")]
 [GeneratedCode("xsd", "4.7.3081.0")]
 [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet")]
-public partial class CodeSnippetCode
+public partial class CodeSnippetCode : SnippetElement
 {
     /// <remarks/>
     [XmlAttribute]
@@ -148,7 +151,7 @@ public partial class CodeSnippetCode
 [DesignerCategory("code")]
 [GeneratedCode("xsd", "4.7.3081.0")]
 [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet")]
-public partial class CodeSnippetDeclarations
+public partial class CodeSnippetDeclarations : SnippetElement
 {
     /// <remarks/>
     [XmlElement("Literal", typeof(CodeSnippetDeclarationsLiteral))]
@@ -171,12 +174,12 @@ public partial class CodeSnippetDeclarationsLiteral
     [XmlElement("ToolTip", typeof(string))]
     [XmlElement("Type", typeof(string))]
     [XmlChoiceIdentifier("ItemsElementName")]
-    public string[] Items { get; set; }
+    public List<string> Items { get; set; }
 
     /// <remarks/>
     [XmlIgnore]
     [XmlElement("ItemsElementName")]
-    public ItemsChoiceType[] ItemsElementName { get; set; }
+    public List<ItemsChoiceType> ItemsElementName { get; set; }
 
     /// <remarks/>
     [XmlAttribute]
@@ -260,7 +263,7 @@ public partial class CodeSnippetDeclarationsObject
 [DesignerCategory("code")]
 [GeneratedCode("xsd", "4.7.3081.0")]
 [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet")]
-public partial class CodeSnippetImports
+public partial class CodeSnippetImports : SnippetElement
 {
     /// <remarks/>
     [XmlElement("Import")]
@@ -285,7 +288,7 @@ public partial class CodeSnippetImportsImport
 [DesignerCategory("code")]
 [GeneratedCode("xsd", "4.7.3081.0")]
 [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet")]
-public partial class CodeSnippetReferences
+public partial class CodeSnippetReferences : SnippetElement
 {
     /// <remarks/>
     [XmlElement("Reference")]
