@@ -16,13 +16,18 @@ partial class CodeSnippet
             if (!line.StartsWith("using"))
             {
                 if (line == "") return this;
-                SnippetObject.Snippet.Add(new CodeSnippetImports() { Import = Imports.Select(x => new CodeSnippetImportsImport() { Namespace = x }).ToArray() });
+                FinalizeSnippet();
                 if (line == DeclarationBeginToken) return new DeclarationHandler(SnippetObject).NextLine(line);
                 return new CodeHandler(SnippetObject).NextLine(line);
             }
             var import = line.Substring("using".Length).Trim(' ', ';');
             Imports.Add(import);
             return this;
+        }
+
+        public override void FinalizeSnippet()
+        {
+            SnippetObject.Snippet.Add(new CodeSnippetImports() { Import = Imports.Select(x => new CodeSnippetImportsImport() { Namespace = x }).ToArray() });
         }
     }
 }

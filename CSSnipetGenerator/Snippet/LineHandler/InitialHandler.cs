@@ -9,5 +9,7 @@ partial class CodeSnippet
             if (line.StartsWith("//")) return new HeaderHandler(SnippetObject).NextLine(line);
             return this;
         }
+
+        public override void FinalizeSnippet() { }
     }
 }

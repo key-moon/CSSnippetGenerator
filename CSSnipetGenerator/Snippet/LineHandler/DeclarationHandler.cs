@@ -21,7 +21,7 @@ partial class CodeSnippet
                 depth--;
                 if (depth < 0)
                 {
-                    SnippetObject.Snippet.Add(new CodeSnippetDeclarations() { Items = Declarations });
+                    FinalizeSnippet();
                     return new CodeHandler(SnippetObject, LiteralTokens);
                 }
             }
@@ -48,6 +48,11 @@ partial class CodeSnippet
                 Declarations.Add(literal);
             }
             return this;
+        }
+
+        public override void FinalizeSnippet()
+        {
+            SnippetObject.Snippet.Add(new CodeSnippetDeclarations() { Items = Declarations });
         }
     }
 }

@@ -12,6 +12,7 @@ partial class CodeSnippet
             SnippetObject.Header.Items = new List<object>();
             SnippetObject.Header.ItemsElementName = new List<CodeSnippetHeader.ItemsChoiceType>();
         }
+
         public override LineHandler NextLine(string line)
         {
             if (!line.StartsWith("//"))
@@ -50,5 +51,7 @@ partial class CodeSnippet
             SnippetObject.Header.ItemsElementName.Add(ElementName);
             return this;
         }
+
+        public override void FinalizeSnippet() { }
     }
 }
