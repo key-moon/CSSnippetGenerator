@@ -17,7 +17,7 @@ partial class CodeSnippet
 
         public override LineHandler NextLine(string line)
         {
-            codeBuilder.Append(line.Replace("$", "$$"));
+            codeBuilder.AppendLine(line.Replace("$", "$$"));
             return this;
         }
 
