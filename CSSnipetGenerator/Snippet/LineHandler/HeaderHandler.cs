@@ -6,52 +6,59 @@ partial class CodeSnippet
 {
     private class HeaderHandler : LineHandler
     {
+        List<object> Items = new List<object>();
+        List<CodeSnippetHeader.HeaderItemsChoiceType> ItemsElementName = new List<CodeSnippetHeader.HeaderItemsChoiceType>();
         public HeaderHandler(CodeSnippet snippetObject) : base(snippetObject)
         {
             SnippetObject.Header = new CodeSnippetHeader();
-            SnippetObject.Header.Items = new List<object>();
-            SnippetObject.Header.ItemsElementName = new List<CodeSnippetHeader.ItemsChoiceType>();
         }
 
         public override LineHandler NextLine(string line)
         {
             if (!line.StartsWith("//"))
+            {
+                FinalizeSnippet();
                 return new UsingHandler(SnippetObject).NextLine(line);
+            }
             
             var trimmed = line.TrimStart('/').Split(':', 2).Select(x => x.Trim()).ToArray();
 
             if (trimmed.Length < 2) return this;
-            (object item, CodeSnippetHeader.ItemsChoiceType ElementName) =
+            (object item, CodeSnippetHeader.HeaderItemsChoiceType ElementName) =
             trimmed[0].ToLower() switch
             {
-                "author" => ((object)trimmed[1], CodeSnippetHeader.ItemsChoiceType.Author),
-                "description" => (trimmed[1], CodeSnippetHeader.ItemsChoiceType.Description),
-                "helpurl" => (trimmed[1], CodeSnippetHeader.ItemsChoiceType.HelpUrl),
+                "author" => ((object)trimmed[1], CodeSnippetHeader.HeaderItemsChoiceType.Author),
+                "description" => (trimmed[1], CodeSnippetHeader.HeaderItemsChoiceType.Description),
+                "helpurl" => (trimmed[1], CodeSnippetHeader.HeaderItemsChoiceType.HelpUrl),
                 "keywords" =>
                 (
                     new CodeSnippetKeywords()
                     {
                         Keyword = trimmed[1].Split(',').Select(x => x.Trim()).ToArray()
                     },
-                    CodeSnippetHeader.ItemsChoiceType.Keywords
+                    CodeSnippetHeader.HeaderItemsChoiceType.Keywords
                 ),
-                "shortcut" => (trimmed[1], CodeSnippetHeader.ItemsChoiceType.Shortcut),
+                "shortcut" => (trimmed[1], CodeSnippetHeader.HeaderItemsChoiceType.Shortcut),
                 "Sdnippettypes" =>
                 (
                     new CodeSnippetSnippetTypes()
                     {
                         SnippetType = trimmed[1].Split(',').Select(x => x.Trim()).ToArray()
                     },
-                    CodeSnippetHeader.ItemsChoiceType.SnippetTypes
+                    CodeSnippetHeader.HeaderItemsChoiceType.SnippetTypes
                 ),
-                "title" => (trimmed[1], CodeSnippetHeader.ItemsChoiceType.Title),
+                "title" => (trimmed[1], CodeSnippetHeader.HeaderItemsChoiceType.Title),
                 _ => throw new KeyNotFoundException()
             };
-            SnippetObject.Header.Items.Add(item);
-            SnippetObject.Header.ItemsElementName.Add(ElementName);
+            Items.Add(item);
+            ItemsElementName.Add(ElementName);
             return this;
         }
 
-        public override void FinalizeSnippet() { }
+        public override void FinalizeSnippet()
+        {
+            SnippetObject.Header.Items = Items.ToArray();
+            SnippetObject.Header.ItemsElementName = ItemsElementName.ToArray();
+        }
     }
 }

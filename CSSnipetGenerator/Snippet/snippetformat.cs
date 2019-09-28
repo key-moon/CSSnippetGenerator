@@ -20,7 +20,7 @@ public partial class CodeSnippets
 {
     /// <remarks/>
     [XmlElement("CodeSnippet")]
-    public CodeSnippet[] CodeSnippet { get; set; }
+    public List<CodeSnippet> CodeSnippet { get; set; } = new List<CodeSnippet>();
 }
 
 /// <remarks/>
@@ -34,14 +34,14 @@ public partial class CodeSnippet
 {
 
     /// <remarks/>
-    public CodeSnippetHeader Header { get; set; }
+    public CodeSnippetHeader Header { get; set; } = new CodeSnippetHeader();
 
     /// <remarks/>
     [XmlArrayItem("Code", typeof(CodeSnippetCode), IsNullable = false)]
     [XmlArrayItem("Declarations", typeof(CodeSnippetDeclarations), IsNullable = false)]
     [XmlArrayItem("Imports", typeof(CodeSnippetImports), IsNullable = false)]
     [XmlArrayItem("References", typeof(CodeSnippetReferences), IsNullable = false)]
-    public List<SnippetElement> Snippet { get; set; }
+    public List<SnippetElement> Snippet { get; set; } = new List<SnippetElement>();
 
     /// <remarks/>
     [XmlAttribute]
@@ -67,18 +67,18 @@ public partial class CodeSnippetHeader
     [XmlElement("SnippetTypes", typeof(CodeSnippetSnippetTypes))]
     [XmlElement("Title", typeof(string))]
     [XmlChoiceIdentifier("ItemsElementName")]
-    public List<object> Items { get; set; }
+    public object[] Items { get; set; } = new object[0];
 
     /// <remarks/>
     [XmlIgnore]
     [XmlElement("ItemsElementName")]
-    public List<ItemsChoiceType> ItemsElementName { get; set; }
+    public HeaderItemsChoiceType[] ItemsElementName { get; set; } = new HeaderItemsChoiceType[0];
 
     /// <remarks/>
     [Serializable]
     [GeneratedCode("xsd", "4.7.3081.0")]
     [XmlType(Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet", IncludeInSchema = false)]
-    public enum ItemsChoiceType
+    public enum HeaderItemsChoiceType
     {
         /// <remarks/>
         Author,
@@ -156,7 +156,7 @@ public partial class CodeSnippetDeclarations : SnippetElement
     /// <remarks/>
     [XmlElement("Literal", typeof(CodeSnippetDeclarationsLiteral))]
     [XmlElement("Object", typeof(CodeSnippetDeclarationsObject))]
-    public List<DeclarationsElement> Items { get; set; }
+    public List<DeclarationsElement> Items { get; set; } = new List<DeclarationsElement>();
 }
 
 public abstract class DeclarationsElement { }
@@ -175,12 +175,12 @@ public partial class CodeSnippetDeclarationsLiteral : DeclarationsElement
     [XmlElement("ToolTip", typeof(string))]
     [XmlElement("Type", typeof(string))]
     [XmlChoiceIdentifier("ItemsElementName")]
-    public List<string> Items { get; set; }
+    public string[] Items { get; set; } = new string[0];
 
     /// <remarks/>
     [XmlIgnore]
     [XmlElement("ItemsElementName")]
-    public List<ItemsChoiceType> ItemsElementName { get; set; }
+    public DeclarationsLiteralItemsChoiceType[] ItemsElementName { get; set; } = new DeclarationsLiteralItemsChoiceType[0];
 
     /// <remarks/>
     [XmlAttribute]
@@ -194,7 +194,7 @@ public partial class CodeSnippetDeclarationsLiteral : DeclarationsElement
     [Serializable]
     [GeneratedCode("xsd", "4.7.3081.0")]
     [XmlType(Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet", IncludeInSchema = false)]
-    public enum ItemsChoiceType
+    public enum DeclarationsLiteralItemsChoiceType
     {
         /// <remarks/>
         Default,
@@ -225,12 +225,12 @@ public partial class CodeSnippetDeclarationsObject : DeclarationsElement
     [XmlElement("ToolTip", typeof(string))]
     [XmlElement("Type", typeof(string))]
     [XmlChoiceIdentifier("ItemsElementName")]
-    public List<string> Items { get; set; }
+    public string[] Items { get; set; } = new string[0];
 
     /// <remarks/>
     [XmlIgnore]
     [XmlElement("ItemsElementName")]
-    public List<ItemsChoiceType> ItemsElementName { get; set; }
+    public DeclarationsItemsChoiceType[] ItemsElementName { get; set; } = new DeclarationsItemsChoiceType[0];
 
     /// <remarks/>
     [XmlAttribute]
@@ -243,7 +243,7 @@ public partial class CodeSnippetDeclarationsObject : DeclarationsElement
     [Serializable]
     [GeneratedCode("xsd", "4.7.3081.0")]
     [XmlType(Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet", IncludeInSchema = false)]
-    public enum ItemsChoiceType
+    public enum DeclarationsItemsChoiceType
     {
         /// <remarks/>
         Default,
@@ -308,18 +308,18 @@ public partial class CodeSnippetReferencesReference
     [XmlElement("Url", typeof(string))]
     [XmlElement("Assembly", typeof(string))]
     [XmlChoiceIdentifier("ItemsElementName")]
-    public string[] Items { get; set; }
+    public string[] Items { get; set; } = new string[0];
 
     /// <remarks/>
     [XmlIgnore]
     [XmlElement("ItemsElementName")]
-    public ItemsChoiceType[] ItemsElementName { get; set; }
+    public ReferncesItemsChoiceType[] ItemsElementName { get; set; } = new ReferncesItemsChoiceType[0];
 
     /// <remarks/>
     [Serializable]
     [GeneratedCode("xsd", "4.7.3081.0")]
     [XmlType(Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet", IncludeInSchema = false)]
-    public enum ItemsChoiceType
+    public enum ReferncesItemsChoiceType
     {
         /// <remarks/>
         Assembly,
