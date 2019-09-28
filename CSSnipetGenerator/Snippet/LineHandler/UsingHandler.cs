@@ -27,7 +27,7 @@ partial class CodeSnippet
 
         public override void FinalizeSnippet()
         {
-            SnippetObject.Snippet.Add(new CodeSnippetImports() { Import = Imports.Select(x => new CodeSnippetImportsImport() { Namespace = x }).ToArray() });
+            if (Imports.Count != 0) SnippetObject.Snippet.Add(new CodeSnippetImports() { Import = Imports.Select(x => new CodeSnippetImportsImport() { Namespace = x }).ToArray() });
         }
     }
 }
