@@ -13,6 +13,9 @@ partial class CodeSnippet
             return this;
         }
 
-        public override void FinalizeSnippet() { }
+        public override void FinalizeSnippet() 
+        {
+            SnippetObject = null;
+        }
     }
 }

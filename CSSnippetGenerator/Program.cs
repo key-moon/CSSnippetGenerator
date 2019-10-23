@@ -16,6 +16,7 @@ namespace CSSnippetGenerator
             {
                 using StreamReader reader = new StreamReader(path);
                 var parsed = CodeSnippet.Parse(reader);
+                if (parsed is null) continue;
                 snippets.CodeSnippet.Add(parsed);
             }
 
