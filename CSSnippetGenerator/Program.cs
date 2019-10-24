@@ -10,9 +10,17 @@ namespace CSSnippetGenerator
         static void Main(string[] args)
         {
             var libDir = args.Length == 0 ? GetLibraryDirectory() : args[0];
-            
+
+            if (!Directory.Exists(libDir)) throw new DirectoryNotFoundException("指定されたディレクトリが見つかりません。");
+
+            var srcDir = Path.Combine(libDir, "src");
+            var snippetsDir = Path.Combine(libDir, "snippets");
+
+            Directory.CreateDirectory(snippetsDir);
+            Directory.CreateDirectory(srcDir);
+
             var snippets = new CodeSnippets();
-            foreach (var path in Directory.GetFiles(Path.Combine(libDir, "src"), "*.csx", SearchOption.AllDirectories))
+            foreach (var path in Directory.GetFiles(srcDir, "*.csx", SearchOption.AllDirectories))
             {
                 using StreamReader reader = new StreamReader(path);
                 var parsed = CodeSnippet.Parse(reader);
@@ -21,7 +29,7 @@ namespace CSSnippetGenerator
             }
 
             var serializer = new XmlSerializer(typeof(CodeSnippets));
-            using StreamWriter writer = new StreamWriter(Path.Combine(libDir, "snippets/snippet.snippet"));
+            using StreamWriter writer = new StreamWriter(Path.Combine(snippetsDir, "snippet.snippet"));
             serializer.Serialize(writer, snippets);
         }
 
