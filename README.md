@@ -141,6 +141,6 @@ static @T Power(@T n, long m)
         pow *= pow;
         m &gt;&gt;= 1;
     }
-    return res;
+    return res;$end$
 }</Code>
 ```
