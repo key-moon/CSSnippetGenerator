@@ -24,6 +24,7 @@ partial class CodeSnippet
         public override void FinalizeSnippet()
         {
             var code = codeBuilder.ToString().Trim();
+            code = code.Replace("/*cursor*/", "$end$");
             foreach (var token in LiteralTokens)
                 code = code.Replace(token, $"${token.TrimStart('@')}$");
             SnippetObject.Snippet.Add(new CodeSnippetCode() { Language = "CSharp", Text = new string[] { code } });
