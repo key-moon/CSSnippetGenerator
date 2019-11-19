@@ -168,6 +168,48 @@ public abstract class DeclarationsElement { }
 [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet")]
 public partial class CodeSnippetDeclarationsLiteral : DeclarationsElement
 {
+    public CodeSnippetDeclarationsLiteral() { }
+
+    public CodeSnippetDeclarationsLiteral(
+        bool editable, 
+        string @default = null, 
+        string function = null,
+        string id = null,
+        string tooltip = null,
+        string type = null)
+    {
+        Editable = editable;
+        List<DeclarationsLiteralItemsChoiceType> names = new List<DeclarationsLiteralItemsChoiceType>();
+        List<string> items = new List<string>();
+        if (!(id is null))
+        {
+            names.Add(DeclarationsLiteralItemsChoiceType.ID);
+            items.Add(id);
+        }
+        if (!(@default is null))
+        {
+            names.Add(DeclarationsLiteralItemsChoiceType.Default);
+            items.Add(@default);
+        }
+        if (!(function is null))
+        {
+            names.Add(DeclarationsLiteralItemsChoiceType.Function);
+            items.Add(function);
+        }
+        if (!(tooltip is null))
+        {
+            names.Add(DeclarationsLiteralItemsChoiceType.ToolTip);
+            items.Add(tooltip);
+        }
+        if (!(type is null))
+        {
+            names.Add(DeclarationsLiteralItemsChoiceType.Type);
+            items.Add(type);
+        }
+        ItemsElementName = names.ToArray();
+        Items = items.ToArray();
+    }
+
     /// <remarks/>
     [XmlElement("Default", typeof(string))]
     [XmlElement("Function", typeof(string))]
