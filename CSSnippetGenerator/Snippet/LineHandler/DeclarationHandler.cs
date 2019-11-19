@@ -28,32 +28,25 @@ partial class CodeSnippet
             }
             else if (line.StartsWith("//"))
             {
-                ToolTipBuilder.Append("\n");
-                ToolTipBuilder.Append(line.TrimStart('/'));
+                ToolTipBuilder.AppendLine(line.TrimStart('/'));
             }
-            else
+            else if (line.EndsWith(';'))
             {
-                var tokens = line.Split('=').TakeLast(2).ToArray();
-                if (tokens.Length < 2) return this;
-                var nameToken = tokens[0].Trim().Split(' ').Last();
-                var defaultToken = tokens[1].Trim().Split(' ').First().TrimEnd(';');
-                if (LiteralTokens.Contains(nameToken))
+                string id, @default, tooltip;
+                if (line.Contains('='))
                 {
-                    ToolTipBuilder.Clear();
-                    return this;
+                    var tokens = line.Split('=').TakeLast(2).ToArray();
+                    id = tokens[0].Trim().Split(' ').Last();
+                    @default = tokens[1].Trim().Split(' ').First().TrimEnd(';');
                 }
-                LiteralTokens.Add(nameToken);
-                List<string> items = new List<string>();
-                List<CodeSnippetDeclarationsLiteral.DeclarationsLiteralItemsChoiceType> itemsElementName = new List<CodeSnippetDeclarationsLiteral.DeclarationsLiteralItemsChoiceType>();
-                items.Add(nameToken.TrimStart('@'));
-                itemsElementName.Add(CodeSnippetDeclarationsLiteral.DeclarationsLiteralItemsChoiceType.ID);
-                items.Add(defaultToken);
-                itemsElementName.Add(CodeSnippetDeclarationsLiteral.DeclarationsLiteralItemsChoiceType.Default);
-                items.Add(ToolTipBuilder.ToString().Trim());
-                itemsElementName.Add(CodeSnippetDeclarationsLiteral.DeclarationsLiteralItemsChoiceType.ToolTip);
-                var literal = new CodeSnippetDeclarationsLiteral() { Editable = true, ItemsElementName = itemsElementName.ToArray(), Items = items.ToArray() };
+                else
+                {
+                    id = line.Split(' ').Last().TrimEnd(';');
+                    @default = id.TrimStart('@');
+                }
+                tooltip = ToolTipBuilder.ToString().Trim();
                 ToolTipBuilder.Clear();
-                Declarations.Add(literal);
+                AddDeclaration(id, @default, tooltip);
             }
             return this;
         }
@@ -61,6 +54,14 @@ partial class CodeSnippet
         public override void FinalizeSnippet()
         {
             if (Declarations.Count != 0) SnippetObject.Snippet.Add(new CodeSnippetDeclarations() { Items = Declarations });
+        }
+
+        public void AddDeclaration(string id, string @default, string tooltip)
+        {
+            if (LiteralTokens.Contains(id)) return;
+            LiteralTokens.Add(id);
+            var literal = new CodeSnippetDeclarationsLiteral(editable: true, id: id.TrimStart('@'), @default: @default, tooltip: tooltip);
+            Declarations.Add(literal);
         }
     }
 }
