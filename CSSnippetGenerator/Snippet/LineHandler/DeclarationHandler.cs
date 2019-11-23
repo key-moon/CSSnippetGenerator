@@ -37,7 +37,7 @@ partial class CodeSnippet
                 {
                     var tokens = line.Split('=').TakeLast(2).ToArray();
                     id = tokens[0].Trim().Split(' ').Last();
-                    @default = tokens[1].Trim().Split(' ').First().TrimEnd(';');
+                    @default = tokens[1].Trim().TrimEnd(';');
                 }
                 else
                 {
